@@ -366,21 +366,13 @@ namespace etl
 #endif
 
     //*************************************************************************
-    /// Peek the next value in the queue without removing it.
+    /// Return reference to the front value of the queue. If queue is empty
+    /// behavior is undefined.
     //*************************************************************************
-    bool peek(reference value)
-    {
+    const_reference front() const {
       size_type read_index = read.load(etl::memory_order_relaxed);
 
-      if (read_index == write.load(etl::memory_order_acquire))
-      {
-        // Queue is empty
-        return false;
-      }
-
-      value = p_buffer[read_index];
-
-      return true;
+      return p_buffer[read_index];
     }
 
     //*************************************************************************
